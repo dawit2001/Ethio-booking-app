@@ -6,18 +6,9 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/Auth.js";
 import userRouter from "./routes/Users.js";
 import http from "http";
-import socketio from "socket.io";
 
 const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
-
-io.on("connection", (socket) => {
-  console.log("A user connected");
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
-});
+//
 dotenv.config();
 const connect = async () => {
   try {
