@@ -69,7 +69,10 @@ const hotelController = {
         try {
             const hotel = await Hotel.findByIdAndUpdate(
                 hotelId,
-                { name, location, description, amenities, rating },
+                {
+                    name, location, description, amenities, rating, photos,
+                    rooms,
+                },
                 { new: true }
             );
 
