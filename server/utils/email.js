@@ -39,9 +39,3 @@ export const sendConfirmationEmail = async (user, token) => {
     }
   });
 };
-export const validateConfirmedEmail = (req, res, next) => {
-  const { token } = req.query;
-  const validatedToken = validateToken(token, process.env.EMAIL_SECRET);
-  console.log("come on man");
-  console.log(validateToken);
-};

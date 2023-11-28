@@ -5,7 +5,19 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/Auth.js";
 import userRouter from "./routes/Users.js";
+import http from "http";
+import socketio from "socket.io";
+
 const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
+
+io.on("connection", (socket) => {
+  console.log("A user connected");
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
+});
 dotenv.config();
 const connect = async () => {
   try {
@@ -23,6 +35,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || "Something went wrong!";

@@ -12,10 +12,13 @@ const UsersSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    Nationality: {
+    nationality: {
       type: String,
     },
     img: {
+      type: String,
+    },
+    country: {
       type: String,
     },
     city: {
@@ -30,9 +33,6 @@ const UsersSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-    },
-    dateofbirth: {
-      type: Date,
     },
     isAdmin: {
       type: Boolean,
