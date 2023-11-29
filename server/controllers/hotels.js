@@ -1,108 +1,99 @@
-const Hotel = require('../models/Hotel');
-const validator = require('validator'); // Example validation library
+import Hotel from "../models/Hotel.js";
+import Room from "../models/Room.js";
 
-const hotelController = {
-    getAllHotels: async (req, res) => {
-        try {
-            const hotels = await Hotel.find();
-            res.json(hotels);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Internal server error' });
-        }
-    },
+export const createHotel = async (req, res, next) => {
+    const newHotel = new Hotel(req.body);
 
-    getHotelById: async (req, res) => {
-        const { hotelId } = req.params;
+    try {
+        const savedHotel = await newHotel.save();
+        res.status(200).json(savedHotel);
+    } catch (err) {
+        next(err);
+    }
+};
+export const updateHotel = async (req, res, next) => {
+    try {
+        const updatedHotel = await Hotel.findByIdAndUpdate(
+            req.params.id,
+            { $set: req.body },
+            { new: true }
+        );
+        res.status(200).json(updatedHotel);
+    } catch (err) {
+        next(err);
+    }
+};
+export const deleteHotel = async (req, res, next) => {
+    try {
+        await Hotel.findByIdAndDelete(req.params.id);
+        res.status(200).json("Hotel has been deleted.");
+    } catch (err) {
+        next(err);
+    }
+};
+export const getHotel = async (req, res, next) => {
+    try {
+        const hotel = await Hotel.findById(req.params.id);
+        res.status(200).json(hotel);
+    } catch (err) {
+        next(err);
+    }
+};
+export const getHotels = async (req, res, next) => {
+    const { min, max, ...others } = req.query;
+    try {
+        const hotels = await Hotel.find({
+            ...others,
+            cheapestPrice: { $gt: min | 1, $lt: max || 999 },
+        }).limit(req.query.limit);
+        res.status(200).json(hotels);
+    } catch (err) {
+        next(err);
+    }
+};
+export const countByCity = async (req, res, next) => {
+    const cities = req.query.cities.split(",");
+    try {
+        const list = await Promise.all(
+            cities.map((city) => {
+                return Hotel.countDocuments({ city: city });
+            })
+        );
+        res.status(200).json(list);
+    } catch (err) {
+        next(err);
+    }
+};
+export const countByType = async (req, res, next) => {
+    try {
+        const hotelCount = await Hotel.countDocuments({ type: "hotel" });
+        const apartmentCount = await Hotel.countDocuments({ type: "apartment" });
+        const resortCount = await Hotel.countDocuments({ type: "resort" });
+        const villaCount = await Hotel.countDocuments({ type: "villa" });
+        const cabinCount = await Hotel.countDocuments({ type: "cabin" });
 
-        try {
-            const hotel = await Hotel.findById(hotelId).populate('owner').exec();
-            if (!hotel) {
-                return res.status(404).json({ error: 'Hotel not found' });
-            }
-
-            res.json(hotel);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Internal server error' });
-        }
-    },
-
-    createHotel: async (req, res) => {
-        const { name, location, description, amenities, rating, owner, photos,
-            rooms, } = req.body;
-
-        // Example input validation using the validator library
-        if (!validator.isLength(name, { min: 1, max: 255 })) {
-            return res.status(400).json({ error: 'Name must be between 1 and 255 characters' });
-        }
-
-        try {
-            const newHotel = new Hotel({
-                name,
-                location,
-                description,
-                amenities,
-                rating,
-                owner,
-                photos,
-                rooms,
-            });
-
-            await newHotel.save();
-            res.status(201).json({ message: 'Hotel created successfully', hotel: newHotel });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Internal server error' });
-        }
-    },
-
-    updateHotelById: async (req, res) => {
-        const { hotelId } = req.params;
-        const { name, location, description, amenities, rating } = req.body;
-
-        // Example input validation using the validator library
-        if (!validator.isLength(name, { min: 1, max: 255 })) {
-            return res.status(400).json({ error: 'Name must be between 1 and 255 characters' });
-        }
-
-        try {
-            const hotel = await Hotel.findByIdAndUpdate(
-                hotelId,
-                {
-                    name, location, description, amenities, rating, photos,
-                    rooms,
-                },
-                { new: true }
-            );
-
-            if (!hotel) {
-                return res.status(404).json({ error: 'Hotel not found' });
-            }
-
-            res.json({ message: 'Hotel updated successfully', hotel });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Internal server error' });
-        }
-    },
-
-    deleteHotelById: async (req, res) => {
-        const { hotelId } = req.params;
-
-        try {
-            const hotel = await Hotel.findByIdAndDelete(hotelId);
-
-            if (!hotel) {
-                return res.status(404).json({ error: 'Hotel not found' });
-            }
-
-            res.json({ message: 'Hotel deleted successfully' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Internal server error' });
-        }
-    },
+        res.status(200).json([
+            { type: "hotel", count: hotelCount },
+            { type: "apartments", count: apartmentCount },
+            { type: "resorts", count: resortCount },
+            { type: "villas", count: villaCount },
+            { type: "cabins", count: cabinCount },
+        ]);
+    } catch (err) {
+        next(err);
+    }
 };
 
-module.exports = hotelController;
+export const getHotelRooms = async (req, res, next) => {
+    try {
+        const hotel = await Hotel.findById(req.params.id);
+        const list = await Promise.all(
+            hotel.rooms.map((room) => {
+                return Room.findById(room);
+            })
+        );
+        res.status(200).json(list)
+    } catch (err) {
+        next(err);
+    }
+};

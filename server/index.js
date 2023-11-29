@@ -9,7 +9,7 @@ const app = express();
 dotenv.config();
 const connect = async () => {
   try {
-    await mongoose.connect(process.env.DATABASE_URL);
+    await mongoose.connect('mongodb+srv://blex:blexpass@cluster0.rwcl1ax.mongodb.net/?retryWrites=true&w=majority');
     console.log("connected to database");
   } catch (e) {
     throw e;
@@ -23,6 +23,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+router.use('/', bookingRoutes);
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || "Something went wrong!";
