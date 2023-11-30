@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
-router.use('/', bookingRoutes);
+app.use("/api/Booking", bookingRoutes);
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || "Something went wrong!";
