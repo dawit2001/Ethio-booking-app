@@ -1,9 +1,10 @@
 import express from "express";
 import {
-  ResetPassword,
   confirmEmail,
   confirmResetEmail,
+  refreshAccessToken,
   register,
+  resetPassword,
   signin,
 } from "../controllers/auth.js";
 import { sendPasswordRestEmail } from "../utils/email.js";
@@ -13,5 +14,6 @@ router.post("/signin", signin);
 router.get("/confirmEmail", confirmEmail);
 router.post("/resetPasswordEmail", sendPasswordRestEmail);
 router.get("/confirmResetEmail", confirmResetEmail);
-router.get("/resetPassword", ResetPassword);
+router.post("/resetPassword", resetPassword);
+router.get("/refresh", refreshAccessToken);
 export default router;

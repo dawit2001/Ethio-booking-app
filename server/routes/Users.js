@@ -1,15 +1,25 @@
 import express from "express";
-import { getUserByEmail } from "../controllers/users.js";
+import {
+  deleteUser,
+  getProfile,
+  getUser,
+  getUserByEmail,
+  getUsers,
+  updateUser,
+} from "../controllers/users.js";
+import { verifyUser } from "../utils/jwt.js";
 const router = express.Router();
 
 // endpoint to check if users email is registered
 router.get("/userEmail", getUserByEmail);
 //
-router.get("/:id");
+router.get("/profile", verifyUser, getProfile);
 //
-router.get("/");
+router.get("/", getUsers);
 //
-router.put("/:id");
+router.get("/:id", getUser);
 //
-router.delete("/:id");
+router.put("/:id", updateUser);
+//
+router.delete("/:id", deleteUser);
 export default router;

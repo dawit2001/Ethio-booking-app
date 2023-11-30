@@ -1,17 +1,21 @@
 import mongoose from "mongoose";
-const HotelSchema = new mongoose.Schema(
+const RoomSchema = new mongoose.Schema(
   {
     type: {
       type: String,
       required: true,
     },
+    quantity: { type: Number, default: 1 },
     desc: {
       type: String,
       required: true,
     },
-    amenities: {
-      type: [String],
-    },
+    amenities: [
+      {
+        category: String,
+        feature: [String],
+      },
+    ],
     images: {
       type: [String],
       validate: {
@@ -21,14 +25,21 @@ const HotelSchema = new mongoose.Schema(
         message: "you can insert only five picutres of a room",
       },
     },
-    roomNumbers: [{ number: Number, unavailableDates: { type: [Date] } }],
+    roomNumbers: [{ number: Number, unavailableDates: { type: [Date] } }], // stores room numbers and check their availablility
     maxPeople: {
       type: Number,
+      required: true,
+      validate: {
+        validator: (value) => value > 0,
+        message: "Max people must be a positive number",
+      },
     },
-    specialOffer: {
-      type: String,
+    bathroom: {
+      private: Boolean,
+      amenities: [String],
     },
+    bedType: String,
   },
   { timestamps: true }
 );
-export default mongoose.model("User", HotelSchema);
+export default mongoose.model("Room", RoomSchema);

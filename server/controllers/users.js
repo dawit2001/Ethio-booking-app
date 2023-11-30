@@ -2,6 +2,7 @@ import User from "../models/User.js";
 
 export const getUserByEmail = async (req, res, next) => {
   const { email } = req.query;
+  console.log(email);
   try {
     const user = await User.findOne({ email });
     res.json(user);
@@ -49,5 +50,20 @@ export const deleteUser = async (req, res, next) => {
     res.send(200).send("user deleted successfully");
   } catch (error) {
     next(error);
+  }
+};
+
+export const getProfile = async (req, res, next) => {
+  console.log(req.user);
+  try {
+    const user = await User.findById(req.user.id);
+    console.log(user);
+    if (user) {
+      const { password, ...otherDetails } = user._doc;
+      console.log(otherDetails);
+      res.status(200).json({ ...otherDetails });
+    }
+  } catch (error) {
+    console.log(error);
   }
 };

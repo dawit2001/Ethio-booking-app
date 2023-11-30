@@ -46,8 +46,6 @@ export const sendPasswordRestEmail = async (req, res, next) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({ email });
-    console.log(user);
-
     if (!user) next(createError(404, "user not found"));
     const token = generateToken(
       { id: user.id, isAdmin: user.isAdmin, isVerified: user.isVerified },
@@ -73,6 +71,7 @@ export const sendPasswordRestEmail = async (req, res, next) => {
         next(createError(500, `something went wrong ${error}`));
       } else {
         res.status(200).json("Successfully sent email.");
+        console.log("successfull");
       }
     });
   } catch (error) {

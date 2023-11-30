@@ -3,20 +3,28 @@ const ReviewSchema = new mongoose.Schema(
   {
     title: {
       type: String,
+      required: true,
     },
     comment: {
       type: String,
     },
-    rating: {
-      type: Number,
-      max: 10,
-      min: 0,
-      default: 0,
-    },
-    reviewer: {
+    rating: [
+      {
+        category: String,
+        rating: {
+          type: Number,
+          max: 10,
+          min: 1,
+          default: 1,
+        },
+      },
+    ],
+    user: {
       type: mongoose.Schema.ObjectId,
       ref: "User",
     },
+    helpful: Number,
+    notHelpful: Number,
   },
   { timestamps: true }
 );
