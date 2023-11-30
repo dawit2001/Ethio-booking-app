@@ -9,7 +9,7 @@ const app = express();
 dotenv.config();
 const connect = async () => {
   try {
-    await mongoose.connect('mongodb+srv://blex:blexpass@cluster0.rwcl1ax.mongodb.net/?retryWrites=true&w=majority');
+    await mongoose.connect('mongo url');
     console.log("connected to database");
   } catch (e) {
     throw e;
