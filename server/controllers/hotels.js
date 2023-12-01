@@ -1,16 +1,55 @@
 import Hotel from "../models/Hotel.js";
+import Room from "../models/Room.js";
+
+// Assuming you have User and Review schemas
+import User from "../models/User.js";
+import Review from "../models/Review.js";
 
 
 export const createHotel = async (req, res, next) => {
-    const newHotel = new Hotel(req.body);
+    const { hotelData, roomsData, reviewsData, ownerData } = req.body;
 
     try {
-        const savedHotel = await newHotel.save();
-        res.status(200).json(savedHotel);
-    } catch (err) {
-        next(err);
+        // Create the hotel owner
+        const owner = await User.create(ownerData);
+
+        // Create the hotel and associate it with the owner
+        const hotel = await Hotel.create({ ...hotelData, owner: owner._id });
+
+        // Create rooms associated with the hotel
+        const createdRooms = await Promise.all(
+            roomsData.map(async (roomData) => {
+                const room = new Room({ ...roomData, hotel: hotel._id });
+                return room.save();
+            })
+        );
+
+        // Create reviews associated with the hotel and rooms
+        const createdReviews = await Promise.all(
+            reviewsData.map(async (reviewData, index) => {
+                const review = new Review({
+                    ...reviewData,
+                    hotel: hotel._id,
+                    room: createdRooms[index]._id,
+                    user: owner._id,
+                });
+                return review.save();
+            })
+        );
+
+        // Update the hotel with the created room, review, and owner IDs
+        hotel.owner = owner._id;
+        hotel.rooms = createdRooms.map((room) => room._id);
+        hotel.reviews = createdReviews.map((review) => review._id);
+        await hotel.save();
+
+        res.status(201).json({ hotel, owner, rooms: createdRooms, reviews: createdReviews });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
 };
+
+
 export const updateHotel = async (req, res, next) => {
     try {
         const updatedHotel = await Hotel.findByIdAndUpdate(
@@ -47,38 +86,6 @@ export const getHotels = async (req, res, next) => {
             cheapestPrice: { $gt: min | 1, $lt: max || 999 },
         }).limit(req.query.limit);
         res.status(200).json(hotels);
-    } catch (err) {
-        next(err);
-    }
-};
-export const countByCity = async (req, res, next) => {
-    const cities = req.query.cities.split(",");
-    try {
-        const list = await Promise.all(
-            cities.map((city) => {
-                return Hotel.countDocuments({ city: city });
-            })
-        );
-        res.status(200).json(list);
-    } catch (err) {
-        next(err);
-    }
-};
-export const countByType = async (req, res, next) => {
-    try {
-        const hotelCount = await Hotel.countDocuments({ type: "hotel" });
-        const apartmentCount = await Hotel.countDocuments({ type: "apartment" });
-        const resortCount = await Hotel.countDocuments({ type: "resort" });
-        const villaCount = await Hotel.countDocuments({ type: "villa" });
-        const cabinCount = await Hotel.countDocuments({ type: "cabin" });
-
-        res.status(200).json([
-            { type: "hotel", count: hotelCount },
-            { type: "apartments", count: apartmentCount },
-            { type: "resorts", count: resortCount },
-            { type: "villas", count: villaCount },
-            { type: "cabins", count: cabinCount },
-        ]);
     } catch (err) {
         next(err);
     }
