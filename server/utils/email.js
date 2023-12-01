@@ -49,7 +49,8 @@ export const sendPasswordRestEmail = async (req, res, next) => {
     if (!user) next(createError(404, "user not found"));
     const token = generateToken(
       { id: user.id, isAdmin: user.isAdmin, isVerified: user.isVerified },
-      process.env.RESET_SECRET
+      process.env.RESET_SECRET,
+      "15m"
     );
 
     const url = `http://localhost:4000/api/auth/confirmResetEmail?token=${token}`;

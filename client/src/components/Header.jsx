@@ -6,7 +6,7 @@ import { GoQuestion } from "react-icons/go";
 import { CgMenuRight } from "react-icons/cg";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Avatar } from "@mui/material";
+import ProfilePopOver from "./ProfilePopOver";
 
 const Header = () => {
   const location = useLocation();
@@ -14,7 +14,7 @@ const Header = () => {
   const checkRoutes = () => {
     if (
       location.pathname.includes("/recover-account") ||
-      location.pathname.includes("/confirm-email") ||
+      location.pathname.includes("/email-confirmed") ||
       location.pathname.includes("/reset-password") ||
       location.pathname.includes("/recover-account") ||
       location.pathname.includes("/register/password")
@@ -64,7 +64,7 @@ const Header = () => {
     fetchProfile();
   }, []);
   return (
-    <div className="w-full md:px-20 px-5 py-3 bg-primary flex justify-between ">
+    <div className="w-full md:px-20 px-5 py-3 bg-radial flex justify-between ">
       <div className="self-center md:w-[240px] w-[50px] md:h-full">
         <Link to="/">
           <img
@@ -78,23 +78,7 @@ const Header = () => {
       <div className="px-5 flex ">
         <div className="hidden md:flex gap-4">
           {user ? (
-            <>
-              {!checkRoutes() && (
-                <div className="">
-                  <button className="bg-slate-50   rounded-full border-2 border-white">
-                    <Avatar
-                      variant="circle"
-                      alt="image"
-                      className="w-[30px] h-[30px] bg-slate-400 rounded-md shadow-md"
-                    >
-                      {user.name
-                        ? user.name.slice(0, 1)
-                        : user.email.slice(0, 1)}
-                    </Avatar>
-                  </button>
-                </div>
-              )}
-            </>
+            <>{!checkRoutes() && <ProfilePopOver user={user} />}</>
           ) : (
             <>
               <NavLink

@@ -15,6 +15,7 @@ import RecoverAccount from "./pages/RecoverAccount.jsx";
 import RegisterPassword from "./pages/RegisterPassword.jsx";
 import ConfirmRecoverAccount from "./pages/ConfirmRecoverAccount.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
+import ConfirmEmail from "./pages/ConfirmEmail.jsx";
 
 const router = createBrowserRouter([
   {
@@ -65,8 +66,8 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/confirm-email",
-    element: <Home />,
+    path: "/email-confirmed",
+    element: <ConfirmEmail />,
     errorElement: <Error />,
   },
 ]);

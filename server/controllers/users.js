@@ -53,6 +53,7 @@ export const deleteUser = async (req, res, next) => {
   }
 };
 
+// get user from accesstoken
 export const getProfile = async (req, res, next) => {
   console.log(req.user);
   try {

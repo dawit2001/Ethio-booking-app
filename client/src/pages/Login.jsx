@@ -42,7 +42,9 @@ const Login = () => {
 
   return (
     <div className="w-full flex flex-col ">
-      <Header />
+      <div className="w-full bg-radial">
+        <Header />
+      </div>
       <div className="self-center md:w-[35%] w-[85%]  py-8 flex flex-col gap-5">
         <h1 className="text-xl font-medium text-gray-900 self-center  break-words">
           Login or Create Account

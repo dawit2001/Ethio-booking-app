@@ -48,7 +48,9 @@ const LoginPassword = () => {
   };
   return (
     <div className="w-full flex flex-col ">
-      <Header />
+      <div className="w-full bg-radial">
+        <Header />
+      </div>
       <div className="self-center w-[35%] py-8 flex flex-col gap-5">
         <h1 className="text-xl font-semibold text-gray-900 self-center">
           Enter your password

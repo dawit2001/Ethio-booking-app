@@ -18,9 +18,42 @@ export const register = async (req, res, next) => {
     await newUser.save();
     const emailToken = generateToken(
       { id: newUser.id, verified: newUser.isVerified },
-      process.env.EMAIL_SECRET
+      process.env.EMAIL_SECRET,
+      "1d"
     );
     sendConfirmationEmail(newUser, emailToken);
+    const token = generateToken(
+      {
+        id: newUser.id,
+        isAdmin: newUser.isAdmin,
+        isVerified: newUser.isVerified,
+      },
+      process.env.JWT_SECRET,
+      "15m"
+    );
+    const refreshToken = generateToken(
+      {
+        id: newUser.id,
+        isAdmin: newUser.isAdmin,
+        isVerified: newUser.isVerified,
+      },
+      process.env.REFRESH_SECRET,
+      "30d"
+    );
+
+    res.cookie("refresh_token", refreshToken, {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    });
+
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+      expires: new Date(Date.now() + 15 * 60 * 1000),
+    });
     res.status(201).json("User successfully registered");
   } catch (e) {
     next(e);
@@ -75,13 +108,35 @@ export const signin = async (req, res, next) => {
   }
 };
 
+// GoogleAuth
+export const googleSignIn = (req, res, next) => {};
+
+//
+export const signout = (req, res, next) => {
+  console.log("come on man");
+  res.cookie("access_token", "", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    expires: new Date(0),
+    path: "/",
+  });
+  res.cookie("refresh_token", "", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    expires: new Date(0),
+    path: "/",
+  });
+  res.status(200).json("user logged out");
+};
 // checks if token is expired
 function isTokenExpired(expirationTimestamp) {
   const now = Date.now() / 1000;
   return now >= expirationTimestamp;
 }
 
-// refresh accesstoken after initial accesstoken is expired
+// refresh accesstoken after  the initial accesstoken is expired
 export const refreshAccessToken = async (req, res, next) => {
   res.cookie("access_token", "", {
     httpOnly: true,
@@ -94,7 +149,7 @@ export const refreshAccessToken = async (req, res, next) => {
   try {
     const token = req.cookies["refresh_token"];
     const validatedToken = validateToken(token, process.env.REFRESH_SECRET);
-    if (!validatedToken && isTokenExpired(validatedToken.decodedToken.exp))
+    if (!validatedToken || isTokenExpired(validatedToken.exp))
       next(createError(403, "Invalid token"));
     console.log(validatedToken);
     const user = await User.findById(validatedToken.id);
@@ -104,16 +159,15 @@ export const refreshAccessToken = async (req, res, next) => {
       "30d"
     );
     const { password, ...otherDetails } = user._doc;
-    console.log("new refresh token");
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-        sameSite: "None",
-        secure: true,
-        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-      })
-      .status(200)
-      .json({ ...otherDetails });
+
+    res.cookie("access_token", AccessToken, {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    });
+    console.log(req.cookies["access_token"]);
+    res.status(200).json({ ...otherDetails });
   } catch (error) {
     next(error);
   }
@@ -135,7 +189,7 @@ export const confirmEmail = async (req, res, next) => {
       { new: true }
     );
 
-    res.redirect("http://localhost:3000/email-confirm");
+    res.redirect("http://localhost:3000/email-confirmed");
   } catch (e) {
     next(e);
   }
