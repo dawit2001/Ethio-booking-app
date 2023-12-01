@@ -5,6 +5,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/Auth.js";
 import userRouter from "./routes/Users.js";
+import bookingRouter from "./routes/Booking.js";
+import hotelRouter from "./routes/Hotels.js";
+import { json } from "react-router";
 const app = express();
 dotenv.config();
 const connect = async () => {
@@ -23,7 +26,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
-router.use('/', bookingRoutes);
+app.use('/api/Booking', bookingRouter);
+app.use('/api/hotel', hotelRouter);
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || "Something went wrong!";
@@ -37,4 +41,5 @@ app.use((err, req, res, next) => {
 app.listen(process.env.PORT || "4000", () => {
   connect();
   console.log("server connected....");
+
 });
