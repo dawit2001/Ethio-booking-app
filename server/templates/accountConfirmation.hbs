@@ -1,0 +1,45 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirm Account</title>
+  </head>
+  <body>
+    <div
+      style="margin:0px;padding:0px;border:0px;background-color:#ffffff;font-family:BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px"
+    >
+      <div
+        style="padding:20px;width:100%;background-color:rgba(0, 153, 255, 0.925);color:white"
+      >
+        <a
+          href=""
+          style="font-size: large;color:white;font-weight:700"
+        >EthioBooking</a>
+      </div>
+      <h1>
+        Verify your email address
+      </h1>
+      <p
+        style="font-family:BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0px;padding:0px;border:0px;margin-bottom:8px"
+      >You've created an account with the email address:
+        <span><a href="mailto:{{email}}" id="email">{{email}}</a>
+        </span>Click 'confirm' to verify the email address and unlock your full
+        account. We'll also import any bookings you've made with that address.</p>
+      <a
+        href="{{url}}"
+        style="font-family:BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0px;padding:0px;border:0px;font-size:14px;line-height:20px;text-align:center;color:#ffffff;background:#0071c2;border-radius:3px;border:1px solid #0071c2;background:#0071c2;padding-top:8px;padding-right:16px;padding-bottom:8px;padding-left:16px;width:100%"
+      >confirm</a>
+    </div>
+    <script>
+      function setDynamicEmail() { const emailInput =
+      {{email}}
+      const dynamicMailtoLink = document.getElementById('email'); if
+      (isValidEmail(emailInput)) { dynamicMailtoLink.href =
+      `mailto:${emailInput}`; } } function isValidEmail(email) { const
+      emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; return emailRegex.test(email);
+      } document.getElementById('email').addEventListener('click',
+      setDynamicEmail);
+    </script>
+
+  </body>
+</html>
