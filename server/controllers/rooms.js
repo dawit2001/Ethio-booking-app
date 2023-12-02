@@ -53,7 +53,7 @@ export const deleteRoomById = async (req, res) => {
         if (!room) {
             return res.status(404).json({ error: "Room not found" });
         }
-        res.status(204).send();
+        res.status(204).send("room has been deleted");
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

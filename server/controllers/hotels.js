@@ -70,6 +70,93 @@ export const deleteHotel = async (req, res, next) => {
         next(err);
     }
 };
+/*
+export const updateHotel = async (req, res, next) => {
+    const hotelId = req.params.hotelId;
+    const { hotelData, roomsData, reviewsData, ownerData } = req.body;
+
+    try {
+        // Find the hotel to be updated
+        const hotel = await Hotel.findById(hotelId);
+
+
+
+        // Update hotel owner
+        const updatedOwner = await User.findByIdAndUpdate(hotel.owner, ownerData, { new: true });
+
+        // Update hotel data
+        Object.assign(hotel, hotelData);
+        await hotel.save();
+
+        // Update rooms associated with the hotel
+        const updatedRooms = await Promise.all(
+            roomsData.map(async (roomData, index) => {
+                const roomId = hotel.rooms[index];
+                const updatedRoom = await Room.findByIdAndUpdate(roomId, roomData, { new: true });
+                return updatedRoom;
+            })
+        );
+
+        // Update reviews associated with the hotel and rooms
+        const updatedReviews = await Promise.all(
+            reviewsData.map(async (reviewData, index) => {
+                const reviewId = hotel.reviews[index];
+                const updatedReview = await Review.findByIdAndUpdate(reviewId, reviewData, { new: true });
+                return updatedReview;
+            })
+        );
+
+        res.status(200).json({
+            hotel: { ...hotel._doc, owner: updatedOwner._id },
+            owner: updatedOwner,
+            rooms: updatedRooms,
+            reviews: updatedReviews,
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};* /
+
+
+
+/*
+export const deleteHotel = async (req, res, next) => {
+    const hotelId = req.params.hotelId;
+
+    try {
+        // Find the hotel to be deleted
+        const hotel = await Hotel.findById(hotelId);
+
+        if (!hotel) {
+            return res.status(404).json({ error: "Hotel not found" });
+        }
+
+        // Delete associated rooms
+        await Room.deleteMany({ hotel: hotel._id });
+
+        // Delete associated reviews
+        await Review.deleteMany({ hotel: hotel._id });
+
+        // Delete the hotel owner if it exists
+        if (hotel.owner) {
+            const owner = await User.findById(hotel.owner);
+            if (owner) {
+                await owner.remove();
+            }
+        }
+
+        // Delete the hotel
+        await hotel.remove();
+
+        res.status(200).json({ message: "Hotel and associated data deleted successfully" });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+*/
 export const getHotel = async (req, res, next) => {
     try {
         const hotel = await Hotel.findById(req.params.id);
@@ -78,17 +165,14 @@ export const getHotel = async (req, res, next) => {
         next(err);
     }
 };
-export const getHotels = async (req, res, next) => {
-    const { min, max, ...others } = req.query;
+
+
+
+export const getHotels = async (req, res) => {
     try {
-        const hotels = await Hotel.find({
-            ...others,
-            cheapestPrice: { $gt: min | 1, $lt: max || 999 },
-        }).limit(req.query.limit);
-        res.status(200).json(hotels);
-    } catch (err) {
-        next(err);
+        const hotel = await Hotel.find();
+        res.status(200).json(hotel);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 };
-
-

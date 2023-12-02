@@ -29,7 +29,6 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use('/api/Booking', bookingRouter);
 app.use('/api/hotel', hotelRouter);
-app.use("/api/Booking", bookingRouter);
 app.use("/api/room", roomRouter)
 
 
