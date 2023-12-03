@@ -36,7 +36,7 @@ const links = [
 
 const Navbar = () => {
   return (
-    <div className="hidden w-full md:flex px-20 py-3  gap-3 bg-primary ">
+    <div className="hidden w-full md:flex px-20 py-3  gap-3 ">
       {links.map((link, i) => (
         <NavLink
           className={({ isActive, isPending }) =>

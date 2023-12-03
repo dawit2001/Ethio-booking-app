@@ -1,28 +1,38 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css";
 import { SlCalender } from "react-icons/sl";
 import { addDays, format } from "date-fns";
-import { AiOutlineMinus } from "react-icons/ai";
-import { FaPlus } from "react-icons/fa6";
 
 const dayAddOptions = [0, 1, 2, 3, 7];
 export default function CalenderBox({ date, setDate, setDayAdd, dayAdd }) {
+  const [windowLength, setWindowLength] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleresize = () => {
+      setWindowLength(window.innerWidth);
+    };
+    window.addEventListener("resize", handleresize);
+    return () => {
+      window.removeEventListener("resize", handleresize);
+    };
+  }, []);
+
+  console.log(length);
   return (
     <Combobox>
       {({ open }) => (
         <>
-          <div className="relative w-full">
+          <div className="relative md:static w-full">
             <Combobox.Button
               className={`${
                 open ? "border border-blue-500" : "border border-gray-300"
-              } rounded-md p-3 w-full flex gap-3 bg-white `}
+              } rounded-md p-3 w-full flex md:gap-3 gap-1 bg-white `}
             >
               <SlCalender className="self-center text-2xl text-gray-600" />
-              <div className="self-center text-gray-800 text-sm font-medium  flex  gap-2">
-                <p className="self-center">{`${format(
+              <div className="self-center text-gray-800 text-sm font-medium  flex   lg:gap-2 gap-0">
+                <p className="self-center  ">{`${format(
                   date[0].startDate,
                   "EEE, MMM d"
                 )} `}</p>
@@ -40,7 +50,7 @@ export default function CalenderBox({ date, setDate, setDayAdd, dayAdd }) {
 
             <Combobox.Options
               className={
-                " absolute top-full mt-3   z-40 border rounded-md shadow-md p-2 bg-white"
+                " sm:absolute top-full mt-3  relative md:right-12 right-0  z-40 border rounded-md shadow-md p-2 bg-white"
               }
             >
               <div className=" flex flex-col gap-2">
@@ -55,8 +65,9 @@ export default function CalenderBox({ date, setDate, setDayAdd, dayAdd }) {
                   }}
                   moveRangeOnFirstSelection={false}
                   ranges={date}
-                  months={2}
-                  direction="horizontal"
+                  months={windowLength < 630 ? 1 : 2}
+                  direction={windowLength < 630 ? "vertical" : "horizontal"}
+                  className="w-full overflow-scroll"
                 />
                 <div className="flex flex-col gap-5 p-3 border-t">
                   <MyRadioGroup setDayAdd={setDayAdd} dayAdd={dayAdd} />
@@ -91,7 +102,11 @@ function MyRadioGroup({ dayAdd, setDayAdd }) {
       );
   };
   return (
-    <RadioGroup value={dayAdd} onChange={setDayAdd} className={"flex gap-3"}>
+    <RadioGroup
+      value={dayAdd}
+      onChange={setDayAdd}
+      className={"grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-3"}
+    >
       {dayAddOptions.map((day) => (
         <RadioGroup.Option key={day} value={day} as={Fragment} className={" "}>
           {({ active, checked }) => (

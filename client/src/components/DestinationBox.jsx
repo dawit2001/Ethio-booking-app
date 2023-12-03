@@ -36,7 +36,7 @@ export default function DestinationBox() {
             <Combobox.Button
               className={`${
                 open ? "border border-blue-500" : "border border-gray-300"
-              } rounded-md p-3 w-full flex gap-1 bg-white `}
+              } rounded-md p-3 w-full flex gap-1 bg-white h-auto `}
             >
               <GrLocation className="self-center text-2xl text-gray-600" />
               <Combobox.Input

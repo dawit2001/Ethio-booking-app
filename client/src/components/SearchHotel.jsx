@@ -80,10 +80,10 @@ const SearchHotel = () => {
     }
   };
   return (
-    <div className="w-full px-20 flex justify-center align-middle">
-      <div className=" absolute top-[90%] w-[80%] p-2 search-radial rounded-md shadow-sm">
+    <div className="w-full md:px-20 px-5 flex justify-center align-middle">
+      <div className="relative w-full   md:absolute md:top-[90%] md:w-[85%] p-2 search-radial rounded-md shadow-sm">
         <form
-          className="flex gap-1 "
+          className="md:relative sm:static flex md:flex-row flex-col gap-1   p-0 "
           onSubmit={handleSubmit}
           action="/signin"
           method="post"
