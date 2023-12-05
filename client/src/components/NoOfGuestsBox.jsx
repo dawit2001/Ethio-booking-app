@@ -70,7 +70,7 @@ export default function NoOfGuestsBox({
               } rounded-md p-3 w-full flex gap-3 bg-white `}
             >
               <IoPersonOutline className="self-center text-2xl text-gray-600" />
-              <div className="self-center w-full text-sm  text-gray-700 font-medium flex  gap-2">
+              <div className="self-center w-full text-sm  text-gray-700 font-medium flex sm:flex-row sm:gap-2 gap-0">
                 <span>{GuestOptions.adults} Adults .</span>
                 <span>{GuestOptions.children} Children .</span>
                 <span>{GuestOptions.room} Rooms </span>

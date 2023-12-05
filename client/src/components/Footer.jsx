@@ -7,26 +7,27 @@ import logo2 from "/assets/Eblogo3.svg";
 import { footerLists } from "../utils/footerlist";
 
 const Footer = () => {
+  const day = new Date().getFullYear();
   footerLists.map((list, i) => console.log(list[Object.keys(list)]));
   return (
     <footer className="w-full  justify-self-end">
-      <div className="w-full bg-radial p-20 flex flex-col justify-center align-middle">
-        <h2 className="self-center text-white font-medium text-3xl">
+      <div className="w-full bg-radial md:p-20 p-5 flex flex-col justify-center align-middle">
+        <h2 className="self-center text-white font-medium md:text-3xl text-lg">
           Save time,Save money
         </h2>
-        <p className="text-white text-xl self-center">
+        <p className="text-white md:text-xl text-sm self-center">
           Subscribe and we'll send the best deals to you
         </p>
         <form
           action=""
-          className="flex justify-between self-center rounded-md border w-[50%] mt-5"
+          className="flex justify-between self-center rounded-md border md:w-[50%] w-full mt-5"
         >
           <input
             type="text"
-            className="p-4 bg-white outline-none flex-1 "
+            className="w-full p-4 bg-white outline-none flex-1 "
             placeholder="Enter your email address"
           />
-          <button className="bg-primary p-4 text-white  rounded-md">
+          <button className=" bg-primary p-4 text-white  rounded-md">
             Subscribe
           </button>
         </form>
@@ -41,6 +42,9 @@ const Footer = () => {
             ))}
           </div>
         ))}
+      </div>
+      <div className="w-full px-20 border-t text-[13px] py-20">
+        <p>&copy; {day} Booking.com™. All rights reserved.</p>
       </div>
     </footer>
   );

@@ -16,6 +16,8 @@ import RegisterPassword from "./pages/RegisterPassword.jsx";
 import ConfirmRecoverAccount from "./pages/ConfirmRecoverAccount.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import ConfirmEmail from "./pages/ConfirmEmail.jsx";
+import SearchResult from "./pages/SearchResult.jsx";
+import Hotel from "./pages/Hotel.jsx";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +70,16 @@ const router = createBrowserRouter([
   {
     path: "/email-confirmed",
     element: <ConfirmEmail />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/searchresults",
+    element: <SearchResult />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/hotel/:id/:hotelname",
+    element: <Hotel />,
     errorElement: <Error />,
   },
 ]);
