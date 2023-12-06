@@ -1,11 +1,11 @@
-import express from "express";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import authRouter from "./routes/Auth.js";
-import userRouter from "./routes/Users.js";
-import http from "http";
+const express = require("express");
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const authRouter = require("./routes/Auth.js");
+const userRouter = require("./routes/Users.js");
+const http = require("http");
 
 const app = express();
 //
@@ -24,7 +24,7 @@ mongoose.connection.on("disconnected", () => {
 });
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", "https://abebe.ethiobooking.com"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     credentials: true,
     exposedHeaders: ["Authorization"],

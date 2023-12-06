@@ -1,6 +1,6 @@
-import User from "../models/User.js";
+const User = require("../models/User.js");
 
-export const getUserByEmail = async (req, res, next) => {
+const getUserByEmail = async (req, res, next) => {
   const { email } = req.query;
   console.log(email);
   try {
@@ -11,7 +11,7 @@ export const getUserByEmail = async (req, res, next) => {
   }
 };
 
-export const getUsers = async (req, res, next) => {
+const getUsers = async (req, res, next) => {
   try {
     const users = await User.find();
     res.send(200).json(users);
@@ -19,7 +19,7 @@ export const getUsers = async (req, res, next) => {
     next(e);
   }
 };
-export const getUser = async (req, res, next) => {
+const getUser = async (req, res, next) => {
   const id = req.params.id;
   try {
     const user = await User.findById(id);
@@ -29,7 +29,7 @@ export const getUser = async (req, res, next) => {
   }
 };
 
-export const updateUser = async (req, res, next) => {
+const updateUser = async (req, res, next) => {
   const id = req.params.id;
   try {
     const updatedUser = await User.findByIdAndUpdate(
@@ -43,7 +43,7 @@ export const updateUser = async (req, res, next) => {
   }
 };
 
-export const deleteUser = async (req, res, next) => {
+const deleteUser = async (req, res, next) => {
   const id = req.params.id;
   try {
     const deletedUser = await User.findByIdAndDelete(id);
@@ -54,7 +54,7 @@ export const deleteUser = async (req, res, next) => {
 };
 
 // get user from accesstoken
-export const getProfile = async (req, res, next) => {
+const getProfile = async (req, res, next) => {
   console.log(req.user);
   try {
     const user = await User.findById(req.user.id);
@@ -67,4 +67,13 @@ export const getProfile = async (req, res, next) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+module.exports = {
+  getProfile,
+  getUser,
+  deleteUser,
+  updateUser,
+  getUsers,
+  getUserByEmail,
 };

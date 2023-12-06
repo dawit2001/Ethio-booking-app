@@ -1,12 +1,12 @@
-import User from "../models/User.js";
-import bcrypt from "bcryptjs";
-import { sendConfirmationEmail } from "../utils/email.js";
-import { generateToken, validateToken } from "../utils/jwt.js";
-import dotenv from "dotenv";
-import { createError } from "../utils/error.js";
+const User = require("../models/User.js");
+const bcrypt = require("bcryptjs");
+const { sendConfirmationEmail } = require("../utils/email.js");
+const { generateToken, validateToken } = require("../utils/jwt.js");
+const dotenv = require("dotenv");
+const { createError } = require("../utils/error.js");
 dotenv.config();
 //----
-export const register = async (req, res, next) => {
+const register = async (req, res, next) => {
   console.log(req.body);
   try {
     const salt = bcrypt.genSaltSync(16);
@@ -61,7 +61,7 @@ export const register = async (req, res, next) => {
 };
 
 //------
-export const signin = async (req, res, next) => {
+const signin = async (req, res, next) => {
   console.log("login requested");
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -109,10 +109,10 @@ export const signin = async (req, res, next) => {
 };
 
 // GoogleAuth
-export const googleSignIn = (req, res, next) => {};
+const googleSignIn = (req, res, next) => {};
 
 //
-export const signout = (req, res, next) => {
+const signout = (req, res, next) => {
   console.log("come on man");
   res.cookie("access_token", "", {
     httpOnly: true,
@@ -137,7 +137,7 @@ function isTokenExpired(expirationTimestamp) {
 }
 
 // refresh accesstoken after  the initial accesstoken is expired
-export const refreshAccessToken = async (req, res, next) => {
+const refreshAccessToken = async (req, res, next) => {
   res.cookie("access_token", "", {
     httpOnly: true,
     secure: true,
@@ -173,9 +173,9 @@ export const refreshAccessToken = async (req, res, next) => {
   }
 };
 
-//----- confirm token from email after user signed up
+//----- confirm token =require email after user signed up
 
-export const confirmEmail = async (req, res, next) => {
+const confirmEmail = async (req, res, next) => {
   try {
     const { token } = req.query;
     const validatedToken = validateToken(token, process.env.EMAIL_SECRET);
@@ -195,8 +195,8 @@ export const confirmEmail = async (req, res, next) => {
   }
 };
 
-//-------- confirms token from email when user reset their password
-export const confirmResetEmail = async (req, res, next) => {
+//-------- confirms token =require email when user reset their password
+const confirmResetEmail = async (req, res, next) => {
   try {
     const { token } = req.query;
     const validatedToken = validateToken(token, process.env.RESET_SECRET);
@@ -212,7 +212,7 @@ export const confirmResetEmail = async (req, res, next) => {
 };
 
 //
-export const resetPassword = async (req, res, next) => {
+const resetPassword = async (req, res, next) => {
   console.log(req.body);
   try {
     const { email, password } = req.body;
@@ -235,4 +235,16 @@ export const resetPassword = async (req, res, next) => {
   } catch (e) {
     next(e);
   }
+};
+
+module.exports = {
+  confirmEmail,
+  resetPassword,
+  confirmResetEmail,
+  refreshAccessToken,
+  isTokenExpired,
+  signout,
+  googleSignIn,
+  signin,
+  register,
 };

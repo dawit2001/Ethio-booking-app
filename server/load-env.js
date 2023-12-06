@@ -1,6 +1,6 @@
-import fs from "fs";
-import path from "path";
-import dotenv from "dotenv";
+const fs = require("fs");
+const path = require("path");
+const dotenv = require("dotenv");
 
 const envFilePath = path.resolve(__dirname, ".env");
 
@@ -15,6 +15,6 @@ if (fs.existsSync(envFilePath)) {
   console.log(".env file loaded successfully");
 } else {
   console.warn(
-    ".env file is not found; using environment variables from the server"
+    ".env file is not found; using environment variables =require the server"
   );
 }

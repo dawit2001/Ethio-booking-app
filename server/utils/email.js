@@ -1,13 +1,14 @@
-import nodemailer from "nodemailer";
-import hbs from "handlebars";
-import dotenv from "dotenv";
-import fs from "fs";
+const nodemailer = require("nodemailer");
+const hbs = require("handlebars");
+const dotenv = require("dotenv");
+const fs = require("fs");
 dotenv.config();
-import path from "path";
-import { createError } from "./error.js";
-import { generateToken, validateToken } from "./jwt.js";
-import User from "../models/User.js";
-import { create } from "domain";
+const path = require("path");
+const { createError } = require("./error.js");
+const { generateToken, validateToken } = require("./jwt.js");
+const User = require("../models/User.js");
+const { create } = require("domain");
+
 // nodemailer configuration for smtp email protocol
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -18,7 +19,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendConfirmationEmail = (user, token) => {
+const sendConfirmationEmail = (user, token) => {
   const url = `http://localhost:4000/api/auth/confirmEmail?token=${token}`;
   const emailTemplateSource = fs.readFileSync(
     path.join("templates", "accountConfirmation.hbs"),
@@ -42,7 +43,7 @@ export const sendConfirmationEmail = (user, token) => {
   });
 };
 
-export const sendPasswordRestEmail = async (req, res, next) => {
+const sendPasswordRestEmail = async (req, res, next) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -78,4 +79,9 @@ export const sendPasswordRestEmail = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+module.exports = {
+  sendConfirmationEmail,
+  sendPasswordRestEmail,
 };
