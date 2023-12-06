@@ -11,12 +11,3 @@ deployment:
     # Restart Node.js app
     - /bin/killall -q node
     - npm start:prod &
-
-    # Deployment path for React app
-    - export REACT_DEPLOYPATH=/home/ethiobooking/abebe.ethiobooking.com/
-
-    # Copy Vite-based React app files to deployment directory and install dependencies
-    - /bin/cp -R client/* $REACT_DEPLOYPATH
-    - cd $REACT_DEPLOYPATH
-    - npm install
-    - npm run build
