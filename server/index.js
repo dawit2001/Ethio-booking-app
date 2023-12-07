@@ -5,23 +5,13 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRouter = require("./routes/Auth.js");
 const userRouter = require("./routes/Users.js");
+const prisma = require("./utils/prisma.js");
 const http = require("http");
 
 const app = express();
 //
 dotenv.config();
-const connect = async () => {
-  try {
-    await mongoose.connect(process.env.DATABASE_URL);
-    console.log("connected to database");
-  } catch (e) {
-    console.log(e);
-    throw e;
-  }
-};
-mongoose.connection.on("disconnected", () => {
-  console.log("mongoDB disconnected!");
-});
+
 app.use(
   cors({
     origin: ["http://localhost:3000", "https://abebe.ethiobooking.com"],
@@ -45,7 +35,6 @@ app.use((err, req, res, next) => {
     stack: err.stack,
   });
 });
-app.listen(process.env.PORT || "4000", () => {
-  connect();
+app.listen(process.env.PORT || "4000", async () => {
   console.log("server connected....");
 });

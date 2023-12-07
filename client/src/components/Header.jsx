@@ -43,7 +43,7 @@ const Header = () => {
         if (e.response.status === 401 || e.response.status === 403) {
           try {
             const response = await axios.get(
-              "http://localhost:4000/api/auth/refresh",
+              `http://localhost:4000/api/auth/refresh`,
               {
                 headers: {
                   "Content-Type": "application/json",

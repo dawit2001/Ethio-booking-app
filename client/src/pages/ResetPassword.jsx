@@ -51,8 +51,16 @@ const ResetPassword = () => {
         {
           email,
           password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          withCredentials: true,
         }
       );
+      console.log(await response.data);
       navigate("/");
     } catch (e) {
       console.log(e.response.data.message);
