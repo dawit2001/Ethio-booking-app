@@ -1,78 +1,44 @@
-name: Build and Deploy
+name: 🚀 Deploy website on push
 
 on:
   push:
     branches:
       - main
-
 jobs:
-  build:
+  web-deploy:
+    name: 🎉 Deploy
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js for React App
-        uses: actions/setup-node@v3
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: "16"
 
-      - name: Install dependencies for React App
-        run: npm --prefix client/ install
-
-      - name: Build React App
-<<<<<<< HEAD
-        run: npm --prefix client/ run build
-=======
+      - name: 🔨 Build Project
         run: |
-          cd client/
+          cd client
+          npm install
           npm run build
-          cd ..
 
-      - name: Display React App Build Output
-        run: |
-          echo "Contents of client/dist/:"
-          ls -R /
->>>>>>> a1c3940 (Update deploy.yml)
-
-      - name: Set up Node.js for Server-Side App
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - name: Install dependencies for Server-Side App
-        run: npm --prefix server/ install
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Deploy React App to cPanel
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4 
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ftp.ethiobooking.com
           username: abebe@ethiobooking.com
           password: ${{ secrets.FTP_FRONTEND_PASSWORD }}
           server-dir: /abebe.ethiobooking.com/
-<<<<<<< HEAD
           local-dir: client/dist/
-=======
-          
->>>>>>> 3ebb9ba (Update deploy.yml)
           exclude: ".git,.github,node_modules"
 
       - name: Deploy Node.js Server-Side App to cPanel
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server:  ftp.ethiobooking.com
+          server: ftp.ethiobooking.com
           username: abebeserver@ethiobooking.com
           password: ${{ secrets.FTP_BACKEND_PASSWORD }}
           server-dir: /abebeapi.ethiobooking.com/
-<<<<<<< HEAD
           local-dir: server/
-=======
-          
->>>>>>> 3ebb9ba (Update deploy.yml)
           exclude: ".git,.github,node_modules"
