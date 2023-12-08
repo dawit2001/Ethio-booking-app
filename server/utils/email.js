@@ -6,7 +6,6 @@ dotenv.config();
 const path = require("path");
 const { createError } = require("./error.js");
 const { generateToken, validateToken } = require("./jwt.js");
-const User = require("../models/User.js");
 const { create } = require("domain");
 const prisma = require("./prisma.js");
 

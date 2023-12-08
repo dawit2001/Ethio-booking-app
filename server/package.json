@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prisma:generate": " npx prisma generate",
-    "start": "npm run prisma:generate && nodemon index.js",
+    "start": "npm i prisma --save-dev && npm run prisma:generate && nodemon index.js",
     "start:prod": "npm run prisma:generate && node index.js"
   },
   "author": "",
