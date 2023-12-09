@@ -6,13 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prisma:generate": " npx prisma generate",
-    "start": "npm i prisma --save-dev && npm run prisma:generate && nodemon index.js",
+    "start": " npm run prisma:generate && nodemon index.js",
     "start:prod": "npm run prisma:generate && node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.7.0",
+    "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

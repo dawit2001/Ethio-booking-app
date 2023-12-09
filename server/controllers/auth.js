@@ -3,7 +3,7 @@ const { sendConfirmationEmail } = require("../utils/email.js");
 const { generateToken, validateToken } = require("../utils/jwt.js");
 const dotenv = require("dotenv");
 const { createError } = require("../utils/error.js");
-const prisma = require("../utils/prisma.js");
+const InitializePayment = require("../utils/payment.js");
 dotenv.config();
 //----
 
@@ -254,6 +254,13 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
+const payment = async () => {
+  try {
+    InitializePayment();
+  } catch (e) {
+    console.log(e);
+  }
+};
 module.exports = {
   confirmEmail,
   resetPassword,
@@ -264,4 +271,5 @@ module.exports = {
   googleSignIn,
   signin,
   register,
+  payment,
 };
