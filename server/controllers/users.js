@@ -1,7 +1,6 @@
-const User = require("../models/User.js");
 const { createError } = require("../utils/error.js");
-const prisma = require("../utils/prisma.js");
-
+const { prisma } = require("../utils/prisma.js");
+prisma;
 const getUserByEmail = async (req, res, next) => {
   const { email } = req.query;
   console.log(email);

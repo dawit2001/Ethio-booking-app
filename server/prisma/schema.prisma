@@ -21,7 +21,65 @@ model User {
   city          String?
   country       String?
   streetAddress String?
+  role          UserRole
   isVerified    Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  Hotel         Hotel[]
+}
+
+model Hotel {
+  id           Int           @id @default(autoincrement())
+  name         String
+  type         String
+  description  String        @db.LongText
+  webSite      String?
+  rating       Int           @default(0) @db.Int
+  streetAddres String?
+  city         String
+  country      String
+  postcode     String?
+  mapUrl       String?
+  ownerId      Int
+  owner        User          @relation(fields: [ownerId], references: [id])
+  HotelImage   HotelImages[]
+  HotelRoom    HotelRoom[]
+}
+
+model HotelImages {
+  id      Int    @id @default(autoincrement())
+  url     String
+  hotelId Int?
+  Hotel   Hotel? @relation(fields: [hotelId], references: [id])
+}
+
+model Room {
+  id          Int         @id @default(autoincrement())
+  type        String
+  description String      @db.LongText
+  HotelRoom   HotelRoom[]
+}
+
+model HotelRoom {
+  id            Int         @id @default(autoincrement())
+  numberOfRoom  Int         @default(1)
+  roomId        Int?
+  hotelId       Int?
+  pricePerGuest Int
+  RoomImage     RoomImage[]
+  Room          Room?       @relation(fields: [roomId], references: [id])
+  Hotel         Hotel?      @relation(fields: [hotelId], references: [id])
+}
+
+model RoomImage {
+  id          Int        @id @default(autoincrement())
+  url         String
+  hotelRoomId Int?
+  HotelRoom   HotelRoom? @relation(fields: [hotelRoomId], references: [id])
+}
+
+enum UserRole {
+  partner
+  customer
+  admin
 }
