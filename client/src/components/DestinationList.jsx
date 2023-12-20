@@ -1,4 +1,6 @@
 import React from "react";
+import MapComponent from "./Mapcomponent";
+import MapWithAutocomplete from "./Mapcomponent";
 
 const DestinationList = () => {
   return (
@@ -25,7 +27,24 @@ const DestinationList = () => {
               123 properties
             </p>
           </div>
-        </div>{" "}
+        </div>
+        <div className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative"></div>{" "}
+        <div className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative">
+          <img
+            src="https://aw-d.tripcdn.com/images/200f1a0000018k9hy932A_R_600_400_R5_D.webp"
+            alt=""
+            className="rounded-t-2xl w-full h-[80%]"
+          />
+          <h1 className="absolute top-5 left-4 text-white font-black text-3xl">
+            Addis Ababa
+          </h1>
+          <div className="p-3">
+            <p className="text-lg text-gray-800 font-bold">Addis Ababa</p>
+            <p className="text-[14px] text-gray-700 font-normal">
+              123 properties
+            </p>
+          </div>
+        </div>
         <div className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative">
           <img
             src="https://cdn.tatlerasia.com/asiatatler/i/ph/2018/11/05181526-story-image-195748_cover_1500x900.jpg"
@@ -44,39 +63,7 @@ const DestinationList = () => {
         </div>{" "}
         <div className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative">
           <img
-            src="https://cdn.tatlerasia.com/asiatatler/i/ph/2018/11/05181526-story-image-195748_cover_1500x900.jpg"
-            alt=""
-            className="rounded-t-2xl w-full h-[80%]"
-          />
-          <h1 className="absolute top-5 left-4 text-white font-black text-3xl">
-            Addis Ababa
-          </h1>
-          <div className="p-3">
-            <p className="text-lg text-gray-800 font-bold">Addis Ababa</p>
-            <p className="text-[14px] text-gray-700 font-normal">
-              123 properties
-            </p>
-          </div>
-        </div>{" "}
-        <div className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative">
-          <img
-            src="https://cdn.tatlerasia.com/asiatatler/i/ph/2018/11/05181526-story-image-195748_cover_1500x900.jpg"
-            alt=""
-            className="rounded-t-2xl w-full h-[80%]"
-          />
-          <h1 className="absolute top-5 left-4 text-white font-black text-3xl">
-            Addis Ababa
-          </h1>
-          <div className="p-3">
-            <p className="text-lg text-gray-800 font-bold">Addis Ababa</p>
-            <p className="text-[14px] text-gray-700 font-normal">
-              123 properties
-            </p>
-          </div>
-        </div>{" "}
-        <div className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative">
-          <img
-            src="https://cdn.tatlerasia.com/asiatatler/i/ph/2018/11/05181526-story-image-195748_cover_1500x900.jpg"
+            src="https://aw-d.tripcdn.com/images/200513000000vezwrAB70_R_600_400_R5_D.webp"
             alt=""
             className="rounded-t-2xl w-full h-[80%]"
           />

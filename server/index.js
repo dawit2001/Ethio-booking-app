@@ -4,8 +4,9 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRouter = require("./routes/Auth.js");
 const userRouter = require("./routes/Users.js");
+const hotelRouter = require("./routes/Hotels.js");
 const prisma = require("./utils/prisma.js");
-const http = require("http");
+const path = require("path");
 
 const app = express();
 //
@@ -21,8 +22,17 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
+app.use(
+  "/hotels/uploads",
+  express.static(path.join(__dirname, "uploads/hotels"))
+);
+app.use(
+  "/rooms/uploads",
+  express.static(path.join(__dirname, "uploads/rooms"))
+);
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+app.use("/api/hotel", hotelRouter);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;

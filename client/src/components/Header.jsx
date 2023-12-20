@@ -24,9 +24,10 @@ const Header = () => {
   };
   useEffect(() => {
     const fetchProfile = async () => {
+      console.log("fetch");
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/user/profile",
+          `${import.meta.env.VITE_API_URL}/api/user/profile`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -35,15 +36,17 @@ const Header = () => {
             withCredentials: true,
           }
         );
+        console.log(response);
         const data = await response.data;
         console.log(data);
         if (data) setUser(data);
       } catch (e) {
+        console.log("come on man");
         console.log(e);
         if (e.response.status === 401 || e.response.status === 403) {
           try {
             const response = await axios.get(
-              `http://localhost:4000/api/auth/refresh`,
+              `${import.meta.env.VITE_API_URL}/api/auth/refresh`,
               {
                 headers: {
                   "Content-Type": "application/json",

@@ -30,7 +30,7 @@ const Login = () => {
     }
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/user/userEmail?email=${email}`
+        `${import.meta.env.VITE_API_URL}/api/user/userEmail?email=${email}`
       );
       const data = await response.data;
       console.log(data);

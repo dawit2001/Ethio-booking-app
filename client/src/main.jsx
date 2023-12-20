@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "leaflet/dist/leaflet.css";
 import "./index.css";
+
 import {
   BrowserRouter,
   RouterProvider,
@@ -18,6 +20,8 @@ import ResetPassword from "./pages/ResetPassword.jsx";
 import ConfirmEmail from "./pages/ConfirmEmail.jsx";
 import SearchResult from "./pages/SearchResult.jsx";
 import Hotel from "./pages/Hotel.jsx";
+import RegisterHotel from "./pages/RegisterHotel.jsx";
+import RegisterRoom from "./pages/RegisterRoom.jsx";
 
 const router = createBrowserRouter([
   {
@@ -73,13 +77,23 @@ const router = createBrowserRouter([
     errorElement: <Error />,
   },
   {
-    path: "/searchresults",
+    path: "/hotel/:id/:hotelname",
+    element: <Hotel />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/hotel/register",
+    element: <RegisterHotel />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/hotel/search",
     element: <SearchResult />,
     errorElement: <Error />,
   },
   {
-    path: "/hotel/:id/:hotelname",
-    element: <Hotel />,
+    path: "/room/register",
+    element: <RegisterRoom />,
     errorElement: <Error />,
   },
 ]);

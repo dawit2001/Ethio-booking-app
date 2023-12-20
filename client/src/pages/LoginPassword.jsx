@@ -25,7 +25,7 @@ const LoginPassword = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/auth/signin",
+        `${import.meta.env.VITE_API_URL}/api/auth/signin`,
         {
           email,
           password,
