@@ -24,6 +24,7 @@ const Header = () => {
   };
   useEffect(() => {
     const fetchProfile = async () => {
+      console.log("fetch");
       try {
         const response = await axios.get(
           "http://localhost:4000/api/user/profile",
@@ -35,10 +36,12 @@ const Header = () => {
             withCredentials: true,
           }
         );
+        console.log(response);
         const data = await response.data;
         console.log(data);
         if (data) setUser(data);
       } catch (e) {
+        console.log("come on man");
         console.log(e);
         if (e.response.status === 401 || e.response.status === 403) {
           try {

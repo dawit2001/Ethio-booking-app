@@ -22,15 +22,28 @@ const setCookies = (res, accesstoken, refreshToken) => {
     expires: new Date(Date.now() + 24 * 30 * 60 * 60 * 1000),
   });
 };
+const removeCookies = (res) => {
+  res.cookie("access_token", "", {
+    httpOnly: true,
+    sameSite: "None",
+    secure: true,
+    expires: new Date(0),
+  });
+  res.cookie("refresh_token", "", {
+    httpOnly: true,
+    sameSite: "None",
+    secure: true,
+    expires: new Date(0),
+  });
+};
 const register = async (req, res, next) => {
-  console.log(process.env.EMAIL_USER);
+  removeCookies(res);
   try {
     const salt = bcrypt.genSaltSync(16);
     const hashed = bcrypt.hashSync(req.body.password, salt);
     const newUser = await prisma.user.create({
       data: { ...req.body, password: hashed },
     });
-    // console.log(newUser);
     const emailToken = generateToken(
       { id: newUser.id, verified: newUser.isVerified },
       process.env.EMAIL_SECRET,
@@ -51,7 +64,6 @@ const register = async (req, res, next) => {
     setCookies(res, accesstoken, refreshtoken);
     res.status(201).json("User successfully registered");
   } catch (e) {
-    console.log(e);
     next(e);
   } finally {
     await prisma.$disconnect();
@@ -60,7 +72,7 @@ const register = async (req, res, next) => {
 
 //------
 const signin = async (req, res, next) => {
-  console.log("login requested");
+  removeCookies(res);
   try {
     const user = await prisma.user.findUnique({
       where: { email: req.body.email },
@@ -85,12 +97,10 @@ const signin = async (req, res, next) => {
       "30d"
     );
     const { password, ...otherDetails } = user;
-    console.log({ ...otherDetails });
 
     setCookies(res, accesstoken, refreshtoken);
     res.status(200).json({ ...otherDetails });
   } catch (err) {
-    console.log(err);
     next(err);
   } finally {
     await prisma.$disconnect();
@@ -102,7 +112,6 @@ const googleSignIn = (req, res, next) => {};
 
 //
 const signout = (req, res, next) => {
-  console.log("come on man");
   res.cookie("access_token", "", {
     httpOnly: true,
     secure: true,
@@ -140,7 +149,6 @@ const refreshAccessToken = async (req, res, next) => {
     const validatedToken = validateToken(token, process.env.REFRESH_SECRET);
     if (!validatedToken || isTokenExpired(validatedToken.exp))
       next(createError(403, "Invalid token"));
-    console.log(validatedToken);
     const user = await prisma.user.findUnique({
       where: { id: validatedToken.id },
     });
@@ -157,7 +165,6 @@ const refreshAccessToken = async (req, res, next) => {
       secure: true,
       expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     });
-    console.log(req.cookies["access_token"]);
     res.status(200).json({ ...otherDetails });
   } catch (error) {
     next(error);
@@ -169,7 +176,6 @@ const refreshAccessToken = async (req, res, next) => {
 //----- confirm token =require email after user signed up
 
 const confirmEmail = async (req, res, next) => {
-  console.log("come on man");
   try {
     const { token } = req.query;
     const validatedToken = validateToken(token, process.env.EMAIL_SECRET);
@@ -199,7 +205,6 @@ const confirmResetEmail = async (req, res, next) => {
   try {
     const { token } = req.query;
     const validatedToken = validateToken(token, process.env.RESET_SECRET);
-    console.log(validatedToken);
     const user = await prisma.user.findUnique({
       where: { id: validatedToken.id },
     });
@@ -216,7 +221,6 @@ const confirmResetEmail = async (req, res, next) => {
 
 //
 const resetPassword = async (req, res, next) => {
-  console.log(req.body);
   try {
     const { email, password } = req.body;
     const user = await prisma.user.findUnique({ where: { email } });
@@ -258,9 +262,7 @@ const resetPassword = async (req, res, next) => {
 const payment = async () => {
   try {
     InitializePayment();
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 };
 module.exports = {
   confirmEmail,

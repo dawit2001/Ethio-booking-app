@@ -11,8 +11,8 @@ datasource db {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  email         String   @unique
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
   name          String?
   username      String?
   password      String?
@@ -21,29 +21,30 @@ model User {
   city          String?
   country       String?
   streetAddress String?
-  role          UserRole
-  isVerified    Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  role          UserRole?
+  isVerified    Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   Hotel         Hotel[]
 }
 
 model Hotel {
-  id           Int           @id @default(autoincrement())
-  name         String
-  type         String
-  description  String        @db.LongText
-  webSite      String?
-  rating       Int           @default(0) @db.Int
-  streetAddres String?
-  city         String
-  country      String
-  postcode     String?
-  mapUrl       String?
-  ownerId      Int
-  owner        User          @relation(fields: [ownerId], references: [id])
-  HotelImage   HotelImages[]
-  HotelRoom    HotelRoom[]
+  id            Int           @id @default(autoincrement())
+  name          String
+  type          String
+  description   String        @db.LongText
+  webSite       String?
+  rating        Int           @default(0) @db.Int
+  streetAddress String?
+  city          String
+  country       String
+  postcode      String?
+  long          Decimal
+  lat           Decimal
+  ownerId       Int
+  owner         User          @relation(fields: [ownerId], references: [id])
+  HotelImage    HotelImages[]
+  HotelRoom     HotelRoom[]
 }
 
 model HotelImages {

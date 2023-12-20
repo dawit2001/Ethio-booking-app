@@ -6,6 +6,7 @@ const {
   getUserByEmail,
   getUsers,
   updateUser,
+  getMap,
 } = require("../controllers/users.js");
 const { verifyUser } = require("../utils/jwt.js");
 const router = express.Router();
@@ -14,6 +15,7 @@ const router = express.Router();
 router.get("/userEmail", getUserByEmail);
 //
 router.get("/profile", verifyUser, getProfile);
+//
 //
 router.get("/", getUsers);
 //
