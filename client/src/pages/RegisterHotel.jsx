@@ -61,10 +61,13 @@ const RegisterHotel = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:4000/api/hotel/new", {
-        ...formData,
-        imageUrl,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/hotel/new`,
+        {
+          ...formData,
+          imageUrl,
+        }
+      );
     } catch (e) {
       console.log(e);
     }
