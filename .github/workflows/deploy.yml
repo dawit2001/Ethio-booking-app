@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   web-deploy:
     name: Deploy
@@ -18,12 +19,12 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v3
 
-      - name: Use Node.js 16
-        uses: actions/setup-node@v2
+      - name: Use Node.js 20 for Client Side
+        uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: 20
 
-      - name: 🔨 Build Project
+      - name: 🔨 Build Client-Side Project
         run: |
           cd client
           npm install
@@ -38,6 +39,17 @@ jobs:
           server-dir: /abebe.ethiobooking.com/
           local-dir: client/dist/
           exclude: ".git,.github,node_modules"
+
+      - name: Use Node.js 16 for Server Side
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 🔨 Build Server-Side Project
+        run: |
+          cd server
+          npm install
+          npm run build
 
       - name: Deploy Node.js Server-Side App to cPanel
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
