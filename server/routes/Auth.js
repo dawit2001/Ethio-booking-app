@@ -8,7 +8,6 @@ const {
   resetPassword,
   signin,
   signout,
-  payment,
 } = require("../controllers/auth.js");
 const { sendPasswordRestEmail } = require("../utils/email.js");
 const router = express.Router();

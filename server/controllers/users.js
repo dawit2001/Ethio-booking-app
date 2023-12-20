@@ -1,7 +1,6 @@
 const { createError } = require("../utils/error.js");
 const { prisma } = require("../utils/prisma.js");
 
-prisma;
 const getUserByEmail = async (req, res, next) => {
   const { email } = req.query;
   console.log(email);
@@ -28,7 +27,7 @@ const getUsers = async (req, res, next) => {
 const getUser = async (req, res, next) => {
   const id = req.params.id;
   try {
-    const user = await prisma.user.findUnique({ where: { id: id } });
+    const user = await prisma.user.fidUnique({ where: { id: id } });
     res.send(200).json(user);
   } catch (error) {
     next(error);
@@ -68,10 +67,13 @@ const deleteUser = async (req, res, next) => {
 
 // get user from accesstoken
 const getProfile = async (req, res, next) => {
+  console.log(req.user);
   try {
-    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+    const user = await prisma.user.find({ where: { id: req.user.id } });
+    console.log(user);
     if (user) {
       const { password, ...otherDetails } = user;
+      console.log(otherDetails);
       res.status(200).json({ ...otherDetails });
     }
   } catch (error) {

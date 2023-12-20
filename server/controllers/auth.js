@@ -3,7 +3,7 @@ const { sendConfirmationEmail } = require("../utils/email.js");
 const { generateToken, validateToken } = require("../utils/jwt.js");
 const dotenv = require("dotenv");
 const { createError } = require("../utils/error.js");
-const prisma = require("../utils/prisma.js");
+const { prisma } = require("../utils/prisma.js");
 dotenv.config();
 //----
 
