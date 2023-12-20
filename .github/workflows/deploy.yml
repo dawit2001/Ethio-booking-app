@@ -24,6 +24,9 @@ jobs:
         with:
           node-version: 20
 
+      - name: 🔨 Install Vite
+        run: npm install -g create-vite
+
       - name: 🔨 Build Client-Side Project
         run: |
           cd client
