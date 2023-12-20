@@ -21,6 +21,5 @@ router.post("/resetPassword", resetPassword);
 router.get("/refresh", refreshAccessToken);
 router.get("/signout", signout);
 router.post("/googleAuth", googleSignIn);
-router.get("/payment", payment);
 
 module.exports = router;

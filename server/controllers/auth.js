@@ -268,5 +268,4 @@ module.exports = {
   googleSignIn,
   signin,
   register,
-  payment,
 };
