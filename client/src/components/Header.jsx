@@ -9,6 +9,7 @@ import axios from "axios";
 import ProfilePopOver from "./ProfilePopOver";
 
 const Header = () => {
+  console.log(import.meta.env.MODE);
   const location = useLocation();
   const [user, setUser] = useState(null);
   const checkRoutes = () => {
