@@ -61,7 +61,7 @@ const register = async (req, res, next) => {
       "30d"
     );
     setCookies(res, accesstoken, refreshtoken);
-    res.status(201).json("User successfully registered");
+    res.status(201).send("User successfully registered");
   } catch (e) {
     next(e);
   } finally {
@@ -71,6 +71,7 @@ const register = async (req, res, next) => {
 
 //------
 const signin = async (req, res, next) => {
+  console.log("sign in come on man");
   removeCookies(res);
   try {
     const user = await prisma.user.findUnique({
@@ -80,8 +81,13 @@ const signin = async (req, res, next) => {
       return next(
         createError(404, "Invalid credentials check your email or password")
       );
+    console.log(req.body.password);
 
-    const isPasswordCorrect = bcrypt.compare(req.body.password, user.password);
+    const isPasswordCorrect = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+    console.log(isPasswordCorrect);
     if (!isPasswordCorrect)
       return next(createError(400, "Wrong password or username!"));
     const payload = {
@@ -98,8 +104,9 @@ const signin = async (req, res, next) => {
     const { password, ...otherDetails } = user;
 
     setCookies(res, accesstoken, refreshtoken);
-    res.status(200).json({ ...otherDetails });
+    res.status(200).send({ ...otherDetails });
   } catch (err) {
+    console.log(err);
     next(err);
   } finally {
     await prisma.$disconnect();
@@ -125,7 +132,7 @@ const signout = (req, res, next) => {
     expires: new Date(0),
     path: "/",
   });
-  res.status(200).json("user logged out");
+  res.status(200).send("user logged out");
 };
 // checks if token is expired
 function isTokenExpired(expirationTimestamp) {
@@ -164,7 +171,7 @@ const refreshAccessToken = async (req, res, next) => {
       secure: true,
       expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     });
-    res.status(200).json({ ...otherDetails });
+    res.status(200).send({ ...otherDetails });
   } catch (error) {
     next(error);
   } finally {
@@ -250,7 +257,7 @@ const resetPassword = async (req, res, next) => {
       "30d"
     );
     setCookies(res, accesstoken, refreshtoken);
-    res.status(200).json("Updated password successfully");
+    res.status(200).send("Updated password successfully");
   } catch (e) {
     next(e);
   } finally {

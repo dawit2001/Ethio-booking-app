@@ -22,11 +22,39 @@ import SearchResult from "./pages/SearchResult.jsx";
 import Hotel from "./pages/Hotel.jsx";
 import RegisterHotel from "./pages/RegisterHotel.jsx";
 import RegisterRoom from "./pages/RegisterRoom.jsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Flights from "./pages/Flights.jsx";
+import CarRental from "./pages/CarRental.jsx";
+import Attractions from "./pages/Attractions.jsx";
+import Taxis from "./pages/Taxis.jsx";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/flights",
+    element: <Flights />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/cars",
+    element: <CarRental />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/attractions",
+    element: <Attractions />,
+    errorElement: <Error />,
+  },
+  {
+    path: "/taxis",
+    element: <Taxis />,
     errorElement: <Error />,
   },
   {
@@ -77,6 +105,11 @@ const router = createBrowserRouter([
     errorElement: <Error />,
   },
   {
+    path: "/hotel",
+    element: <Home />,
+    errorElement: <Error />,
+  },
+  {
     path: "/hotel/:id/:hotelname",
     element: <Hotel />,
     errorElement: <Error />,
@@ -99,6 +132,9 @@ const router = createBrowserRouter([
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} fallbackElement={<>Loading</>} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   </React.StrictMode>
 );

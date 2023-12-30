@@ -8,7 +8,6 @@ import { footerLists } from "../utils/footerlist";
 
 const Footer = () => {
   const day = new Date().getFullYear();
-  footerLists.map((list, i) => console.log(list[Object.keys(list)]));
   return (
     <footer className="w-full  justify-self-end">
       <div className="w-full bg-radial md:p-20 p-5 flex flex-col justify-center align-middle">

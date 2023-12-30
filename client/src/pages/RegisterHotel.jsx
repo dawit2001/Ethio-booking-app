@@ -1,7 +1,21 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+
+const RegisterHotelApi = async (formData, imageUrl) => {
+  const response = await axios.post(
+    `${import.meta.env.VITE_API_URL}/api/hotel/new`,
+    {
+      ...formData,
+      imageUrl,
+    }
+  );
+  console.log(await response.data);
+  return response.data;
+};
 
 const RegisterHotel = () => {
+  const [uploadProgress, setUploadProgress] = useState(null);
   const [formData, setFormData] = useState({
     name: null,
     description: null,
@@ -12,10 +26,17 @@ const RegisterHotel = () => {
     streetAddress: null,
     webSite: null,
   });
+  const mutation = useMutation({
+    mutationKey: ["RegisterHotel"],
+    mutationFn: ({ formData, imageUrl }) =>
+      RegisterHotelApi(formData, imageUrl),
+    onSuccess: (data) => console.log(data),
+  });
   const [error, setError] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const uploadImage = async (e) => {
-    console.log(e.target.files[0]);
+    const image = e.target.files[0];
+    if (!image) return;
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
     try {
@@ -30,12 +51,13 @@ const RegisterHotel = () => {
             const percentage = Math.round(
               (progress.loaded / progress.total) * 100
             );
-            console.log(`Upload Progress: ${percentage}%`);
+            setUploadProgress(percentage);
           },
         }
       );
       const data = await response.data;
       setImageUrl(data.url);
+      setUploadProgress(null);
     } catch (e) {
       console.log(e);
     }
@@ -59,20 +81,10 @@ const RegisterHotel = () => {
       console.log("coldest moment");
       return;
     }
-
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/hotel/new`,
-        {
-          ...formData,
-          imageUrl,
-        }
-      );
-    } catch (e) {
-      console.log(e);
-    }
+    mutation.mutate({ formData, imageUrl });
   };
-  console.log(formData);
+  console.log(uploadProgress);
+
   return (
     <div>
       <form
@@ -189,7 +201,7 @@ const RegisterHotel = () => {
             className="border w-1/2 outline-none p-2 rounded-md"
           />
         </div>
-        <div className="flex flex-col gap-2 w-1/2">
+        <div className="flex flex-col gap-2 w-1/2 relative">
           <label
             htmlFor="hotel_img"
             className="p-10 flex gap-5 md:border-dashed  border-2 rounded-2 align-middle justify-center"
@@ -198,17 +210,38 @@ const RegisterHotel = () => {
               Add image
             </p>
           </label>
-          <input
-            type="file"
-            id="hotel_img"
-            name="image"
-            onChange={uploadImage}
-            accept=".jpg, .jpeg, .png, .webp"
-            hidden
-            className="border w-1/2 outline-none p-2 rounded-md"
-          />
+          <div className="flex relative ">
+            <input
+              type="file"
+              id="hotel_img"
+              name="image"
+              onChange={uploadImage}
+              accept=".jpg, .jpeg, .png, .webp"
+              hidden
+              className="border w-1/2 outline-none p-2 rounded-md"
+            />
+          </div>
+          {uploadProgress && (
+            <div className="absolute top-1/2 left-1/2 w-[150px] flex flex-col gap-5 z-40 bg-green-600">
+              <div className="w-full h-[15px] rounded-full bg-white p-[1px] border">
+                <div
+                  className={`w-[${uploadProgress}%] h-full bg-primary rounded-full`}
+                ></div>
+              </div>
+              <p className="text-md font-semibold text-gray-600">
+                uploading ...
+              </p>
+            </div>
+          )}
         </div>
-        <button className="md:bg-primary p-3 text-white font-semibold w-1/3 rounded-md">
+        <button
+          disabled={mutation.isPending || uploadProgress}
+          className={`md:bg-primary p-3 text-white font-semibold w-1/3 rounded-md ${
+            mutation.isPending || uploadProgress
+              ? "cursor-not-allowed opacity-50"
+              : "opacity-100"
+          }`}
+        >
           submit
         </button>
       </form>

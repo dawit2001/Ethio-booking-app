@@ -1,16 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
-const Destination = [
-  { id: 1, name: "Addis Ababa" },
-  { id: 2, name: "Bahir Dar" },
-  { id: 3, name: "Desi" },
-  { id: 4, name: "Jimma" },
-  { id: 5, name: "Adama" },
-  { id: 6, name: "Arbaminch" },
-  { id: 7, name: "Jigjiga" },
-];
-
 const SearchHotel = () => {
   const [query, setQuery] = useState(null);
   const navigate = useNavigate();
