@@ -1,9 +1,10 @@
-name:  Deploy website on push
+name: Deploy website on push
 
 on:
   push:
     branches:
       - main
+
 jobs:
   web-deploy:
     name: Deploy
@@ -12,10 +13,10 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v3
 
-      - name: Use Node.js 16
-        uses: actions/setup-node@v2
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "20.10.0"
 
       - name: 🔨 Build Project
         run: |
@@ -43,4 +44,4 @@ jobs:
           password: ${{ secrets.FTP_BACKEND_PASSWORD }}
           server-dir: /abebeapi.ethiobooking.com/
           local-dir: server/
-          exclude: ".git,.github,node_modules"
+          exclude: ".git,.github,node_modules,/uploads"
