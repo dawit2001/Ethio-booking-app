@@ -48,10 +48,10 @@ model Hotel {
 }
 
 model HotelImages {
-  id      Int    @id @default(autoincrement())
-  url     String
+  id      Int     @id @default(autoincrement())
+  url     String?
   hotelId Int?
-  Hotel   Hotel? @relation(fields: [hotelId], references: [id])
+  Hotel   Hotel?  @relation(fields: [hotelId], references: [id])
 }
 
 model Room {

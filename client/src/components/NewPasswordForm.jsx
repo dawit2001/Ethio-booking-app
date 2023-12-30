@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { MdErrorOutline } from "react-icons/md";
 import { SlEye } from "react-icons/sl";
 import { RiEyeCloseLine } from "react-icons/ri";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const NewPasswordForm = ({
   buttonTitle,
@@ -9,6 +10,7 @@ const NewPasswordForm = ({
   PasswordChangeHandler,
   PasswordConfirmChangeHandler,
   Error,
+  IsLoading,
 }) => {
   const [showPassword, setShowPassword] = useState([false.false]);
   console.log(Error);
@@ -92,8 +94,18 @@ const NewPasswordForm = ({
           <p className="text-sm text-danger">{Error[1]}</p>
         </div>
       </div>
-      <button className="w-full bg-primary p-3 text-white text-md font-medium rounded-md">
-        {buttonTitle}
+      <button
+        disabled={IsLoading}
+        className={`w-full bg-primary p-3 text-white text-md font-medium rounded-md ${
+          IsLoading
+            ? "opacity-70 cursor-not-allowed"
+            : "opacity-100 cursor-pointer"
+        }`}
+      >
+        <div className="flex gap-2 md:items-center md:align-middle justify-center">
+          {IsLoading && <CircularProgress size={20} className="text-white" />}
+          <p>{buttonTitle}</p>
+        </div>
       </button>
       <div className=" border-gray-300 flex gap-3">
         <span className="self-center border-t w-full"></span>

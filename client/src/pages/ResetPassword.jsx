@@ -7,8 +7,31 @@ import PasswordForm from "../components/PasswordForm";
 import FormFooter from "../components/FormFooter";
 import axios from "axios";
 import NewPasswordForm from "../components/NewPasswordForm";
+import { useMutation } from "@tanstack/react-query";
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+const resetPassword = async ({ email, password }) => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/auth/resetPassword`,
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        withCredentials: true,
+      }
+    );
+    return await response.data;
+  } catch (e) {
+    throw new Error(e.response.data.message);
+  }
+};
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -26,6 +49,11 @@ const ResetPassword = () => {
     setError("");
   };
 
+  const mutation = useMutation({
+    mutationKey: ["resetPassword"],
+    mutationFn: ({ email, password }) => resetPassword({ email, password }),
+    onSuccess: (data) => console.log(data),
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!password) {
@@ -45,28 +73,12 @@ const ResetPassword = () => {
       setError(["", "Password doesn't match "]);
       return;
     }
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/resetPassword`,
-        {
-          email,
-          password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          withCredentials: true,
-        }
-      );
-      console.log(await response.data);
-      navigate("/");
-    } catch (e) {
-      console.log(e.response.data.message);
-      setError([e.response.data.message]);
-    }
+    mutation.mutate({ email, password });
   };
+  if (mutation.isSuccess) navigate("/");
+  useEffect(() => {
+    if (mutation.isError) setError(["", mutation.error.message]);
+  }, [mutation.error]);
   return (
     <div className="w-full flex flex-col ">
       <div className="w-full bg-radial">
@@ -85,6 +97,7 @@ const ResetPassword = () => {
           submitHandler={handleSubmit}
           PasswordChangeHandler={handlePasswordChange}
           PasswordConfirmChangeHandler={handleConfirmPasswordChange}
+          IsLoading={mutation.isPending}
           Error={Error}
         />
 

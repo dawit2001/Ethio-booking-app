@@ -14,6 +14,7 @@ const Header = () => {
   const checkRoutes = () => {
     if (
       location.pathname.includes("/recover-account") ||
+      location.pathname.includes("/signin") ||
       location.pathname.includes("/email-confirmed") ||
       location.pathname.includes("/reset-password") ||
       location.pathname.includes("/recover-account") ||
@@ -22,9 +23,9 @@ const Header = () => {
       return true;
     else return false;
   };
+  console.log(checkRoutes());
   useEffect(() => {
     const fetchProfile = async () => {
-      console.log("fetch");
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/user/profile`,
@@ -36,13 +37,9 @@ const Header = () => {
             withCredentials: true,
           }
         );
-        console.log(response);
         const data = await response.data;
-        console.log(data);
         if (data) setUser(data);
       } catch (e) {
-        console.log("come on man");
-        console.log(e);
         if (e.response.status === 401 || e.response.status === 403) {
           try {
             const response = await axios.get(
@@ -56,11 +53,8 @@ const Header = () => {
               }
             );
             const data = await response.data;
-            console.log(data);
             if (data) setUser(data);
-          } catch (error) {
-            console.log(error);
-          }
+          } catch (error) {}
         }
       }
     };

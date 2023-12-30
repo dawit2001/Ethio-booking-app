@@ -1,6 +1,7 @@
 import React from "react";
 import MapComponent from "./Mapcomponent";
 import MapWithAutocomplete from "./Mapcomponent";
+import { Link } from "react-router-dom";
 
 const DestinationList = () => {
   return (
@@ -12,7 +13,11 @@ const DestinationList = () => {
         <p>Explore stays in trending destinations</p>
       </div>
       <div className=" flex   w-full h-auto gap-5 overflow-x-auto card-scroll md:p-2 p-1 rounded-2xl">
-        <div className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative">
+        <Link
+          to={`/hotel/search?q=addis ababa`}
+          preventScrollReset={true}
+          className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative"
+        >
           <img
             src="https://cdn.tatlerasia.com/asiatatler/i/ph/2018/11/05181526-story-image-195748_cover_1500x900.jpg"
             alt=""
@@ -27,9 +32,13 @@ const DestinationList = () => {
               123 properties
             </p>
           </div>
-        </div>
-        <div className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative"></div>{" "}
-        <div className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative">
+        </Link>
+
+        <Link
+          to={`/hotel/search?q=addis ababa`}
+          preventScrollReset={true}
+          className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative"
+        >
           <img
             src="https://aw-d.tripcdn.com/images/200f1a0000018k9hy932A_R_600_400_R5_D.webp"
             alt=""
@@ -44,8 +53,12 @@ const DestinationList = () => {
               123 properties
             </p>
           </div>
-        </div>
-        <div className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative">
+        </Link>
+        <Link
+          to={`/hotel/search?q=addis ababa`}
+          preventScrollReset={true}
+          className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative"
+        >
           <img
             src="https://cdn.tatlerasia.com/asiatatler/i/ph/2018/11/05181526-story-image-195748_cover_1500x900.jpg"
             alt=""
@@ -60,8 +73,12 @@ const DestinationList = () => {
               123 properties
             </p>
           </div>
-        </div>{" "}
-        <div className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative">
+        </Link>
+        <Link
+          to={`/hotel/search?q=addis ababa`}
+          preventScrollReset={true}
+          className="md:min-w-[380px] md:min-h-[350px] min-w-[285px] min-h-[280px] border bg-white md:shadow-lg  shaodw-gray-500   rounded-2xl flex flex-col gap-2 relative"
+        >
           <img
             src="https://aw-d.tripcdn.com/images/200513000000vezwrAB70_R_600_400_R5_D.webp"
             alt=""
@@ -76,7 +93,7 @@ const DestinationList = () => {
               123 properties
             </p>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );

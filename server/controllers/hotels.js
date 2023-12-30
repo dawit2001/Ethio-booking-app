@@ -11,10 +11,8 @@ const getHotel = async (req, res, next) => {
     const hotelimage = await prisma.hotelImages.findFirst({
       where: { hotelId: parseInt(id) },
     });
-    console.log(hotel);
     res.status(200).json({ ...hotel, imageUrl: hotelimage.url });
   } catch (e) {
-    console.log(e);
     next(e);
   } finally {
     prisma.$disconnect();
@@ -24,19 +22,15 @@ const registerHotel = async (req, res, next) => {
   const { imageUrl, rating, ...body } = req.body;
 
   const [long, lat] = req.location;
-  console.log(long);
-  console.log(lat);
   try {
     const hotel = await prisma.hotel.create({
       data: { ...body, rating: parseInt(rating), long, lat, ownerId: 1 },
     });
-    console.log(hotel);
     const hotelImage = await prisma.hotelImages.create({
       data: { url: imageUrl, hotelId: hotel.id },
     });
-    console.log(hotelImage);
+    res.status(201).send("successfully created");
   } catch (e) {
-    console.log(e);
     next(e);
   } finally {
     await prisma.$disconnect();
@@ -49,16 +43,32 @@ const uploadHotelImage = async (req, res, next) => {
   try {
     const { filename } = req.file;
     const fileUrl = `http://localhost:4000/hotels/uploads/${filename}`;
-    console.log(fileUrl);
     res.status(200).json({ url: fileUrl });
   } catch (e) {
-    console.log(e);
+    next(e);
+  }
+};
+const getTopStays = async (req, res, next) => {
+  try {
+    const hotels = await prisma.hotel.findMany({ take: 6 });
+    const hotelPics = await Promise.all(
+      hotels.map(
+        async (hotel) =>
+          await prisma.hotelImages.findFirst({ where: { hotelId: hotel.id } })
+      )
+    );
+    res.status(200).send(
+      hotels.map((hotel, i) => ({
+        ...hotel,
+        imageUrl: hotelPics[i] ? hotelPics[i].url : null,
+      }))
+    );
+  } catch (e) {
     next(e);
   }
 };
 const searchHotel = async (req, res, next) => {
   const { q } = req.query;
-  console.log(q);
 
   try {
     const result = await prisma.hotel.findMany({
@@ -77,7 +87,6 @@ const searchHotel = async (req, res, next) => {
           await prisma.hotelImages.findFirst({ where: { hotelId: hotel.id } })
       )
     );
-    console.log(hotelPics);
     res.status(200).send(
       result.map((hotel, i) => ({
         ...hotel,
@@ -85,7 +94,6 @@ const searchHotel = async (req, res, next) => {
       }))
     );
   } catch (error) {
-    console.log(error);
   } finally {
     await prisma.$disconnect();
   }
@@ -96,4 +104,5 @@ module.exports = {
   uploadHotelImage,
   searchHotel,
   getHotel,
+  getTopStays,
 };

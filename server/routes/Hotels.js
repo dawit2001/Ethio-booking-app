@@ -5,6 +5,7 @@ const {
   uploadHotelImage,
   searchHotel,
   getHotel,
+  getTopStays,
 } = require("../controllers/hotels.js");
 const { uploadHotel } = require("../utils/upload.js");
 const { Geocoder } = require("../utils/geoLoc.js");
@@ -14,6 +15,7 @@ const router = express.Router();
 //
 //
 router.get("/search", searchHotel);
+router.get("/top", getTopStays);
 router.post("/upload", uploadHotel.single("file"), uploadHotelImage);
 router.post("/new", Geocoder, registerHotel);
 router.get("/:id", getHotel);
