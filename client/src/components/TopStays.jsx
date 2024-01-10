@@ -9,7 +9,14 @@ import { Link } from "react-router-dom";
 
 const topHotels = async () => {
   const response = await axios.get(
-    `${import.meta.env.VITE_API_URL}/api/hotel/top`
+    `${import.meta.env.VITE_API_URL}/api/hotel/top`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      withCredentials: true,
+    }
   );
   const data = await response.data;
   return data;

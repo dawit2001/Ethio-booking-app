@@ -10,12 +10,14 @@ import Checkbox from "@mui/material/Checkbox";
 import { MdOutlineFavorite } from "react-icons/md";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { GoStarFill } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 import Mapcomponent from "../components/Mapcomponent";
 import AvailablityBox from "../components/AvailablityBox";
 const Hotel = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
   console.log(id);
   function capitalizeFirstLetter(str) {
@@ -53,15 +55,15 @@ const Hotel = () => {
       <div className="px-20  w-full flex flex-col mb-5">
         {hotel ? (
           <>
-            <Link
-              to={`/hotel/search?q=${hotel.city}`}
+            <button
+              onClick={() => navigate(-1)}
               className="text-sm  p-4 text-blue-500 font-medium flex "
             >
               <span className="self-center ">
                 <IoMdArrowBack />
               </span>
               see all properties
-            </Link>
+            </button>
             <div className="w-full flex justify-between   px-10 ">
               <div className=" flex flex-col gap-3 p-3 ">
                 <h1 className="text-4xl font-medium text-gray-800 ">

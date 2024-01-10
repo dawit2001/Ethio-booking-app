@@ -8,6 +8,13 @@ const RegisterHotelApi = async (formData, imageUrl) => {
     {
       ...formData,
       imageUrl,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      withCredentials: true,
     }
   );
   console.log(await response.data);

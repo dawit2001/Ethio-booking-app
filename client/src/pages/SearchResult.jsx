@@ -13,7 +13,14 @@ import { useQuery } from "@tanstack/react-query";
 
 const SearchHotelApi = async (searchQuery) => {
   const response = await axios.get(
-    `${import.meta.env.VITE_API_URL}/api/hotel/search?q=${searchQuery}`
+    `${import.meta.env.VITE_API_URL}/api/hotel/search?q=${searchQuery}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      withCredentials: true,
+    }
   );
   const data = await response.data;
   return data;
